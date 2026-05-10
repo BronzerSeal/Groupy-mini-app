@@ -22,7 +22,6 @@ function ThemeStatus() {
   const isDark = useSignal(miniApp.isDark)
   const user = useSignal(initData.user)
   const launchParams = useLaunchParams()
-
   return (
     <div className="grid gap-4 md:grid-cols-3">
       <Card>
