@@ -1,11 +1,18 @@
-"use client";
+"use client"
 
-import * as React from "react";
-import { ThemeProvider as NextThemesProvider } from "next-themes";
+import dynamic from "next/dynamic"
+import { PropsWithChildren } from "react"
 
-export function ThemeProvider({
-  children,
-  ...props
-}: React.ComponentProps<typeof NextThemesProvider>) {
-  return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
+const TelegramThemeSync = dynamic(
+  () => import("./telegram-theme-sync").then((mod) => mod.TelegramThemeSync),
+  { ssr: false }
+)
+
+export function ThemeProvider({ children }: PropsWithChildren) {
+  return (
+    <>
+      <TelegramThemeSync />
+      {children}
+    </>
+  )
 }
