@@ -3,6 +3,7 @@ import { Geist_Mono, Inter } from "next/font/google"
 import "./globals.css"
 import { cn } from "@/lib/utils"
 import { AppProviders } from "@/shared/providers/app-providers"
+import BottomNavigation from "@/widgets/bottom-navigation"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
 
@@ -27,8 +28,9 @@ export default function RootLayout({
         inter.variable
       )}
     >
-      <body>
+      <body className="bg-[var(--tg-theme-bg-color)] p-4 pt-2 text-foreground transition-colors duration-300">
         <AppProviders>{children}</AppProviders>
+        <BottomNavigation />
       </body>
     </html>
   )

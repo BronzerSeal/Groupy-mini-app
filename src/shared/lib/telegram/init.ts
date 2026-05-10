@@ -65,11 +65,16 @@ export async function init(options: {
 
   try {
     miniApp.mount();
+    themeParams.mount();
     themeParams.bindCssVars();
-  } catch {}
+  } catch (error) {
+    console.error('Telegram theme params init failed', error);
+  }
 
   try {
     await viewport.mount();
     viewport.bindCssVars();
-  } catch {}
+  } catch (error) {
+    console.error('Telegram viewport init failed', error);
+  }
 }

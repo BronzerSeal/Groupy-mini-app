@@ -48,23 +48,23 @@
 }
 
 :root {
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.141 0.005 285.823);
+    --background: var(--tg-theme-bg-color, oklch(1 0 0));
+    --foreground: var(--tg-theme-text-color, oklch(0.141 0.005 285.823));
     --card: oklch(1 0 0);
     --card-foreground: oklch(0.141 0.005 285.823);
     --popover: oklch(1 0 0);
     --popover-foreground: oklch(0.141 0.005 285.823);
-    --primary: oklch(0.457 0.24 277.023);
-    --primary-foreground: oklch(0.962 0.018 272.314);
-    --secondary: oklch(0.967 0.001 286.375);
-    --secondary-foreground: oklch(0.21 0.006 285.885);
-    --muted: oklch(0.967 0.001 286.375);
-    --muted-foreground: oklch(0.552 0.016 285.938);
+    --primary: var(--tg-theme-button-color, oklch(0.457 0.24 277.023));
+    --primary-foreground: var(--tg-theme-button-text-color, oklch(0.962 0.018 272.314));
+    --secondary: var(--tg-theme-secondary-bg-color, oklch(0.967 0.001 286.375));
+    --secondary-foreground: var(--tg-theme-text-color, oklch(0.21 0.006 285.885));
+    --muted: var(--tg-theme-secondary-bg-color, oklch(0.967 0.001 286.375));
+    --muted-foreground: var(--tg-theme-hint-color, oklch(0.552 0.016 285.938));
     --accent: oklch(0.967 0.001 286.375);
     --accent-foreground: oklch(0.21 0.006 285.885);
-    --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.92 0.004 286.32);
-    --input: oklch(0.92 0.004 286.32);
+    --destructive: var(--tg-theme-destructive-text-color, oklch(0.577 0.245 27.325));
+    --border: var(--tg-theme-section-separator-color, oklch(0.92 0.004 286.32));
+    --input: var(--tg-theme-section-separator-color, oklch(0.92 0.004 286.32));
     --ring: oklch(0.705 0.015 286.067);
     --chart-1: oklch(0.871 0.006 286.286);
     --chart-2: oklch(0.552 0.016 285.938);
@@ -122,6 +122,10 @@
     }
   body {
     @apply bg-background text-foreground;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease,
+      border-color 0.3s ease;
     }
   button:not(:disabled), [role="button"]:not(:disabled) {
     cursor: pointer;
