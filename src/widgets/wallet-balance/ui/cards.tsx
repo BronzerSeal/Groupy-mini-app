@@ -76,8 +76,6 @@ export function AccountCards() {
   const [newCardType, setNewCardType] = useState("savings")
   const [newCardName, setNewCardName] = useState("")
 
-  console.log(cards)
-
   const cycle = useCallback(() => {
     setOrder((prev) => {
       const next = [...prev]
