@@ -28,9 +28,11 @@ export default function RootLayout({
         inter.variable
       )}
     >
-      <body className="bg-[var(--tg-theme-bg-color)] p-4 pt-2 text-foreground transition-colors duration-300">
-        <AppProviders>{children}</AppProviders>
-        <BottomNavigation />
+      <body>
+        <div className="p-4 pt-2">
+          <AppProviders>{children}</AppProviders>
+          <BottomNavigation />
+        </div>
       </body>
     </html>
   )
