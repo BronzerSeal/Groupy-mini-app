@@ -8,7 +8,11 @@ export function TelegramThemeSync() {
   const user = useSignal(initData.user);
 
   useEffect(() => {
-    document.documentElement.dataset.theme = isDark ? 'dark' : 'light';
+    const root = document.documentElement;
+
+    root.dataset.theme = isDark ? 'dark' : 'light';
+    root.classList.toggle('dark', isDark);
+    root.style.colorScheme = isDark ? 'dark' : 'light';
   }, [isDark]);
 
   useEffect(() => {

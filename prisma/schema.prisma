@@ -11,3 +11,42 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model User {
+  id        String   @id @default(cuid())
+  tgId      Int   @unique
+  username  String?
+  firstName String?
+  lastName  String?
+  photoUrl  String?
+  cards     Card[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+enum CardVariant {
+  default
+  dark
+  primary
+  savings
+  business
+  travel
+}
+
+model Card {
+  id          String   @id @default(cuid())
+  label       String
+  balance     Int
+  currency    String
+  last4       String
+  variant     CardVariant
+
+  userId      Int   
+  user        User     @relation(fields: [userId], references: [tgId], onDelete: Cascade)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
