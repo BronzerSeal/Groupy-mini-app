@@ -1,19 +1,19 @@
 import { cn } from "@/lib/utils"
 import { NfcIcon } from "lucide-react"
 import { motion } from "motion/react"
-import { ReactNode } from "react"
+import type { LucideIcon } from "lucide-react"
 
 interface Props {
   order: number[]
   cycle: () => void
   cards: {
     style: string
-    icon: ReactNode
+    icon: LucideIcon
     chipColor: string
     last4: string
     id: string
     label: string
-    balance: string
+    balance: number
     currency: string
     variant: "default" | "dark" | "primary"
   }[]
@@ -34,6 +34,7 @@ const StackedCards: React.FC<Props> = ({ order, cards, cycle }) => {
           if (!c) return null
           const isFront = stackPos === order.length - 1
           const maxOffset = 48 / Math.max(order.length - 1, 1)
+          const Icon = cards[cardIndex].icon
           return (
             <motion.button
               key={c.id}
@@ -62,7 +63,7 @@ const StackedCards: React.FC<Props> = ({ order, cards, cycle }) => {
                 <span className="text-sm font-semibold tracking-wide">
                   {c.label}
                 </span>
-                {c.icon}
+                {<Icon className="size-5 opacity-30" />}
               </div>
               <div className="flex items-center gap-2">
                 <div className={cn("h-7 w-10 rounded-md", c.chipColor)} />

@@ -14,7 +14,6 @@ import {
   XIcon,
 } from "lucide-react"
 import { motion } from "motion/react"
-import { JSX } from "react"
 
 interface Props {
   addState: "form" | "adding" | "success"
@@ -27,8 +26,6 @@ interface Props {
     value: string
     label: string
     currency: string
-    style: string
-    icon: JSX.Element
     chipColor: string
   }[]
   setAddState: (

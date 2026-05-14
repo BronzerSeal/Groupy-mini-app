@@ -8,13 +8,17 @@ import { QueryClientProvider } from "@tanstack/react-query"
 import { queryClient } from "@/utils/query-client"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import { AuthBootstrap } from "./auth-bootstrap"
+import { Toaster } from "sonner"
 
 export function AppProviders({ children }: PropsWithChildren) {
   return (
     <TelegramProvider>
       <ThemeProvider>
         <QueryClientProvider client={queryClient}>
-          <AuthBootstrap>{children}</AuthBootstrap>
+          <AuthBootstrap>
+            <Toaster />
+            {children}
+          </AuthBootstrap>
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </ThemeProvider>

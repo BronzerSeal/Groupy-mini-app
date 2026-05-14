@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { validate, parse } from "@tma.js/init-data-node"
 import * as jwt from "jsonwebtoken"
 import prisma from "@/utils/prisma"
+import { accountCards } from "@/shared/constants/accountCardsSeed"
 
 export async function POST(req: NextRequest) {
   try {
@@ -63,6 +64,14 @@ export async function POST(req: NextRequest) {
           lastName: parsedUser.last_name,
           photoUrl: parsedUser.photo_url,
         },
+      })
+
+      await prisma.card.createMany({
+        data: [
+          { ...accountCards[0], userId: user.tgId },
+          { ...accountCards[1], userId: user.tgId },
+          { ...accountCards[2], userId: user.tgId },
+        ],
       })
     }
 
