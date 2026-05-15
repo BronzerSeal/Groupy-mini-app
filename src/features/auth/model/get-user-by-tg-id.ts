@@ -17,12 +17,12 @@ type GetUserError = {
 export type GetUserResponse = GetUserSuccess | GetUserError
 
 export const GetUserInfoById = async (
-  userId: number
+  userId: string
 ): Promise<GetUserResponse> => {
   try {
     const user = await (prisma.user.findUnique as any)({
       where: {
-        tgId: userId,
+        tgId: String(userId),
       },
     })
     return { code: 200, status: "success", user }

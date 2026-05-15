@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { GetUserCardsById } from "../model/get-user-cards"
 import { CreateCard, CreateCardInput } from "../model/create-card"
 
-export const useUserCards = (userId: number, enabled: boolean) => {
+export const useUserCards = (userId: string, enabled: boolean) => {
   return useQuery({
     queryKey: ["userCards", userId],
     queryFn: () => GetUserCardsById(userId),
@@ -26,7 +26,7 @@ export const useCreateCard = () => {
 
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
-        queryKey: ["userCards", variables.userId],
+        queryKey: ["userCards", String(variables.userId)],
       })
     },
   })

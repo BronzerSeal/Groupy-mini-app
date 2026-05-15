@@ -4,7 +4,10 @@ import { initData, useSignal } from "@tma.js/sdk-react"
 
 const HomeClient = () => {
   const tgUser = useSignal(initData.state)
-  const { data: user } = UseUserInfoById(tgUser?.user?.id!, !!tgUser?.user?.id)
+  const { data: user } = UseUserInfoById(
+    String(tgUser?.user?.id!),
+    !!tgUser?.user?.id
+  )
   return (
     <div className="flex flex-col">
       <WalletBalance />

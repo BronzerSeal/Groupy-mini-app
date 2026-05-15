@@ -4,7 +4,7 @@ export interface UserFromDB {
   id: string
   lastName: string
   photoUrl: null | string
-  tgId: number
+  tgId: string
   updatedAt: Date
   username: string
 }

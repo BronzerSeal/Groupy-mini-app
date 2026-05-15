@@ -14,7 +14,7 @@ datasource db {
 
 model User {
   id        String   @id @default(cuid())
-  tgId      Int   @unique
+  tgId      String   @unique
   username  String?
   firstName String?
   lastName  String?
@@ -44,7 +44,7 @@ model Card {
   last4       String
   variant     CardVariant
 
-  userId      Int   
+  userId      String   
   user        User     @relation(fields: [userId], references: [tgId], onDelete: Cascade)
 
   createdAt   DateTime @default(now())

@@ -26,7 +26,7 @@ export function AccountCards() {
   const [order, setOrder] = useState<number[]>([])
   const { mutate: createCard } = useCreateCard()
   const user = useSignal(initData.user)
-  const { data: bdCards } = useUserCards(user?.id!, !!user?.id)
+  const { data: bdCards } = useUserCards(String(user?.id!), !!user?.id)
   const cards =
     bdCards?.map((card) => {
       const preset = CARD_VARIANTS[card?.variant]
@@ -68,7 +68,7 @@ export function AccountCards() {
       currency: option.currency,
       variant: option.value as CardVariant,
       last4: String(Math.floor(1000 + Math.random() * 9000)),
-      userId: user.id,
+      userId: String(user.id),
     }
     try {
       await new Promise((resolve) => setTimeout(resolve, 1200))
