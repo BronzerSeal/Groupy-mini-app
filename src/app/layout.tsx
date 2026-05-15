@@ -1,11 +1,14 @@
-import { Geist_Mono, Inter } from "next/font/google"
+import { Geist_Mono, DM_Sans } from "next/font/google"
 
 import "./globals.css"
 import { cn } from "@/lib/utils"
 import { AppProviders } from "@/shared/providers/app-providers"
 import BottomNavigation from "@/widgets/bottom-navigation"
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+})
 
 const fontMono = Geist_Mono({
   subsets: ["latin"],
@@ -25,7 +28,7 @@ export default function RootLayout({
         "antialiased",
         fontMono.variable,
         "font-sans",
-        inter.variable
+        dmSans.variable
       )}
     >
       <body>
