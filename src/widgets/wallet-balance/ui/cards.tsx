@@ -27,7 +27,10 @@ export function AccountCards() {
   const [order, setOrder] = useState<number[]>([])
   const { mutate: createCard } = useCreateCard()
   const user = useSignal(initData.user)
-  const { data: bdCards, isLoading } = useUserCards(String(user?.id!), !!user?.id)
+  const { data: bdCards, isLoading } = useUserCards(
+    String(user?.id!),
+    !!user?.id
+  )
   const cards =
     bdCards?.map((card) => {
       const preset = CARD_VARIANTS[card?.variant]

@@ -26,9 +26,12 @@ export const useCreateCard = () => {
     mutationFn: (card: CreateCardInput) => CreateCard(card),
 
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({
+      ;(queryClient.invalidateQueries({
         queryKey: ["userCards", String(variables.userId)],
-      })
+      }),
+        queryClient.invalidateQueries({
+          queryKey: ["userCards-name", String(variables.userId)],
+        }))
     },
   })
 }

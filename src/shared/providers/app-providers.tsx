@@ -16,7 +16,7 @@ export function AppProviders({ children }: PropsWithChildren) {
       <ThemeProvider>
         <QueryClientProvider client={queryClient}>
           <AuthBootstrap>
-            <Toaster />
+            <Toaster position={"top-right"} />
             {children}
           </AuthBootstrap>
           <ReactQueryDevtools initialIsOpen={false} />

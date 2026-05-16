@@ -1,9 +1,7 @@
 import { AccountCard } from "../types/db.types"
-import { v4 as uuidv4 } from "uuid"
 
-export const accountCards: AccountCard[] = [
+export const accountCards: Omit<AccountCard, "id">[] = [
   {
-    id: uuidv4(),
     label: "Euro Account",
     balance: 0,
     currency: "€",
@@ -11,7 +9,6 @@ export const accountCards: AccountCard[] = [
     variant: "default",
   },
   {
-    id: uuidv4(),
     label: "Crypto Wallet",
     balance: 0,
     currency: "BTC",
@@ -19,7 +16,6 @@ export const accountCards: AccountCard[] = [
     variant: "dark",
   },
   {
-    id: uuidv4(),
     label: "Investment Portfolio",
     balance: 0,
     currency: "$",

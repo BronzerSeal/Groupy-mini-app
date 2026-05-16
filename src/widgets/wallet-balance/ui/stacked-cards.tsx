@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils"
 import { NfcIcon } from "lucide-react"
 import { motion } from "motion/react"
 import type { LucideIcon } from "lucide-react"
+import type { CardVariant } from "../consts/cardStyles"
 
 interface Props {
   order: number[]
@@ -15,7 +16,7 @@ interface Props {
     label: string
     balance: number
     currency: string
-    variant: "default" | "dark" | "primary"
+    variant: CardVariant
   }[]
 }
 
