@@ -24,7 +24,7 @@ export function TransactionActions({
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
           transition={{ type: "spring", damping: 25, stiffness: 300 }}
-          className="fixed inset-x-0 bottom-0 z-50 flex items-center justify-center p-4 md:pl-[calc(var(--sidebar-width)+1rem)]"
+          className="fixed inset-x-0 bottom-16 z-50 flex items-center justify-center p-4 md:pl-[calc(var(--sidebar-width)+1rem)]"
         >
           <div className="flex items-center gap-3 rounded-xl bg-card px-4 py-2.5 shadow-lg ring-1 ring-foreground/10">
             <span className="text-sm font-medium tabular-nums">

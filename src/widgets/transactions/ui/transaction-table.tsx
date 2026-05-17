@@ -12,7 +12,6 @@ import {
 } from "lucide-react"
 
 import { cn } from "@/lib/utils"
-import type { FullTransaction } from "../consts/seed"
 import { Badge } from "shared/ui/badge"
 import { Button } from "shared/ui/button"
 import {
@@ -23,9 +22,10 @@ import {
   TableHeader,
   TableRow,
 } from "shared/ui/table"
+import { FullTransaction } from "@/shared/types/db.types"
 
 interface TransactionTableProps {
-  transactions: FullTransaction[]
+  transactions: FullTransaction[] | []
   selectedIds: Set<string>
   setSelectedIds: (ids: Set<string>) => void
   expandedId: string | null

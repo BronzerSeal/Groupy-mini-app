@@ -23,11 +23,11 @@ export const useTransactionsForTable = () => {
     <div ref={cursorRef}>
       {/* {isFetchingNextPage && <UserPostSkeleton />} */}
       {isFetchingNextPage && <div>Loading</div>}
-      {!hasNextPage && (
+      {/* {!hasNextPage && (
         <div className="mt-2 text-2xl" color="danger">
-          No transactions yet
+          that's all transactions
         </div>
-      )}
+      )} */}
     </div>
   )
 

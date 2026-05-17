@@ -1,12 +1,12 @@
 "use server"
 
-import { AccountCard } from "@/shared/types/db.types"
+import { FullTransaction } from "@/shared/types/db.types"
 import prisma from "@/utils/prisma"
 
 type GetUserTransactionsSuccess = {
   status: "success"
   code: 200
-  transactions: AccountCard[]
+  transactions: FullTransaction[]
   nextCursor: string | undefined
 }
 

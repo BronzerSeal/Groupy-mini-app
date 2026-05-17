@@ -2,14 +2,13 @@
 
 import { useMemo, useState } from "react"
 
-import { fullTransactions, type FullTransaction } from "../consts/seed"
-import { TransactionSummary } from "./transaction-summary"
+// import { fullTransactions, type FullTransaction } from "../consts/seed"
 import { TransactionFilters } from "./transaction-filters"
 import { TransactionTable } from "./transaction-table"
 import { TransactionActions } from "./transaction-actions"
-import { initData, useSignal } from "@tma.js/sdk-react"
 import { seedDb } from "../model/seed-db"
 import { useTransactionsForTable } from "../queries/useTransactions"
+import { FullTransaction } from "@/shared/types/db.types"
 
 export function TransactionsPageClient() {
   const [search, setSearch] = useState("")
@@ -20,9 +19,13 @@ export function TransactionsPageClient() {
   const [expandedId, setExpandedId] = useState<string | null>(null)
 
   //TEST BD LOGIC
-  const user = useSignal(initData.state)
-  const { transactions } = useTransactionsForTable()
-  console.log(transactions)
+  const {
+    transactions: fullTransactions,
+    isLoading,
+    cursor,
+  } = useTransactionsForTable()
+  console.log(fullTransactions)
+  const transactions = fullTransactions ?? []
 
   const handleSeed = async () => {
     const res = await seedDb()
@@ -31,12 +34,12 @@ export function TransactionsPageClient() {
   //-------------------------------------
 
   const categories = useMemo(() => {
-    const cats = new Set(fullTransactions.map((t) => t.category))
+    const cats = new Set(transactions.map((t) => t.category))
     return Array.from(cats).sort()
-  }, [])
+  }, [transactions])
 
   const filteredData = useMemo(() => {
-    let data: FullTransaction[] = fullTransactions
+    let data: FullTransaction[] = transactions
 
     if (search) {
       const q = search.toLowerCase()
@@ -61,10 +64,10 @@ export function TransactionsPageClient() {
     }
 
     return data
-  }, [search, categoryFilter, statusFilter, typeFilter])
+  }, [transactions, search, categoryFilter, statusFilter, typeFilter])
 
   function handleExport() {
-    const selected = fullTransactions.filter((t) => selectedIds.has(t.id))
+    const selected = transactions.filter((t) => selectedIds.has(t.id))
     const header = "Merchant,Transaction ID,Amount,Date,Status,Type"
     const rows = selected.map(
       (t) =>
@@ -81,9 +84,9 @@ export function TransactionsPageClient() {
   }
 
   // console.log(filteredData)
+  if (isLoading) return <div>Loading</div>
   return (
     <div className="flex flex-col gap-4">
-      {/* <TransactionSummary transactions={filteredData} /> */}
       <button
         className="cursor-pointer rounded bg-white text-black"
         onClick={handleSeed}
@@ -116,6 +119,7 @@ export function TransactionsPageClient() {
         onExport={handleExport}
         onClear={() => setSelectedIds(new Set())}
       />
+      {cursor}
     </div>
   )
 }

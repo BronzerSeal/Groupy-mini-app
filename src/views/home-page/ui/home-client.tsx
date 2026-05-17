@@ -7,7 +7,7 @@ import WalletBalance from "@/widgets/wallet-balance"
 
 const HomeClient = () => {
   return (
-    <div className="flex flex-col">
+    <div className="mb-18 flex flex-col">
       <div className="relative -mx-4 -my-4 overflow-hidden">
         <HexagonPattern
           hexagons={[
