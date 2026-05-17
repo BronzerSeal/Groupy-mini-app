@@ -13,16 +13,17 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  tgId      String   @unique
-  username  String?
-  firstName String?
-  lastName  String?
-  photoUrl  String?
-  cards     Card[]
+  id            String   @id @default(cuid())
+  tgId          String   @unique
+  username      String?
+  firstName     String?
+  lastName      String?
+  photoUrl      String?
+  cards         Card[]
+  transactions  Transaction[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   @@map("users")
 }
@@ -49,4 +50,38 @@ model Card {
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+enum TransactionStatus {
+  completed
+  pending
+  failed
+}
+
+enum TransactionType {
+  expense
+  income
+}
+
+
+model Transaction {
+id            String   @id @default(cuid())
+transactionId String
+userId        String   
+amount        Int
+category      String
+logo          String
+merchant      String
+date          String
+
+status        TransactionStatus
+type          TransactionType
+user          User     @relation(fields: [userId], references: [tgId], onDelete: Cascade)
+
+notes         String?
+cardLast4     String?
+merchantInfo  String?
+
+createdAt     DateTime @default(now())
+updatedAt     DateTime @updatedAt
 }
