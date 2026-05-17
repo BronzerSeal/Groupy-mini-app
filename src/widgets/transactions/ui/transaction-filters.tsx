@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import { SearchIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
@@ -36,6 +37,21 @@ export function TransactionFilters({
   categories,
 }: TransactionFiltersProps) {
   const typeOptions = ["all", "income", "expense"] as const
+  const [searchValue, setSearchValue] = useState(search)
+
+  useEffect(() => {
+    setSearchValue(search)
+  }, [search])
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      if (searchValue !== search) {
+        setSearch(searchValue)
+      }
+    }, 400)
+
+    return () => window.clearTimeout(timeoutId)
+  }, [search, searchValue, setSearch])
 
   return (
     <div className="flex flex-wrap items-center gap-2">
@@ -44,13 +60,13 @@ export function TransactionFilters({
         <SearchIcon className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
         <Input
           placeholder="Search transactions..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)}
           className="pl-8"
         />
       </div>
 
-      {/* Category */}
+      {/* Category  */}
       <Select
         value={categoryFilter}
         onValueChange={(v) => v && setCategoryFilter(v)}

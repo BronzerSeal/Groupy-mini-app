@@ -1,14 +1,12 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useState } from "react"
 
-// import { fullTransactions, type FullTransaction } from "../consts/seed"
 import { TransactionFilters } from "./transaction-filters"
+import { TransactionsLoader } from "./transactions-loader"
 import { TransactionTable } from "./transaction-table"
 import { TransactionActions } from "./transaction-actions"
-import { seedDb } from "../model/seed-db"
 import { useTransactionsForTable } from "../queries/useTransactions"
-import { FullTransaction } from "@/shared/types/db.types"
 
 export function TransactionsPageClient() {
   const [search, setSearch] = useState("")
@@ -18,53 +16,23 @@ export function TransactionsPageClient() {
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
   const [expandedId, setExpandedId] = useState<string | null>(null)
 
-  //TEST BD LOGIC
+  //BD LOGIC
   const {
-    transactions: fullTransactions,
+    transactions: serverTransactions,
     isLoading,
+    isRefreshing,
+    categories,
     cursor,
-  } = useTransactionsForTable()
-  console.log(fullTransactions)
-  const transactions = fullTransactions ?? []
+  } = useTransactionsForTable({
+    search,
+    category: categoryFilter,
+    status: statusFilter as "all" | "completed" | "pending" | "failed",
+    type: typeFilter as "all" | "expense" | "income",
+  })
 
-  const handleSeed = async () => {
-    const res = await seedDb()
-    console.log("RES: ", res)
-  }
+  const transactions = serverTransactions ?? []
+
   //-------------------------------------
-
-  const categories = useMemo(() => {
-    const cats = new Set(transactions.map((t) => t.category))
-    return Array.from(cats).sort()
-  }, [transactions])
-
-  const filteredData = useMemo(() => {
-    let data: FullTransaction[] = transactions
-
-    if (search) {
-      const q = search.toLowerCase()
-      data = data.filter(
-        (t) =>
-          t.merchant.toLowerCase().includes(q) ||
-          t.transactionId.toLowerCase().includes(q) ||
-          t.category.toLowerCase().includes(q)
-      )
-    }
-
-    if (categoryFilter !== "all") {
-      data = data.filter((t) => t.category === categoryFilter)
-    }
-
-    if (statusFilter !== "all") {
-      data = data.filter((t) => t.status === statusFilter)
-    }
-
-    if (typeFilter !== "all") {
-      data = data.filter((t) => t.type === typeFilter)
-    }
-
-    return data
-  }, [transactions, search, categoryFilter, statusFilter, typeFilter])
 
   function handleExport() {
     const selected = transactions.filter((t) => selectedIds.has(t.id))
@@ -83,17 +51,8 @@ export function TransactionsPageClient() {
     URL.revokeObjectURL(url)
   }
 
-  // console.log(filteredData)
-  if (isLoading) return <div>Loading</div>
   return (
     <div className="flex flex-col gap-4">
-      <button
-        className="cursor-pointer rounded bg-white text-black"
-        onClick={handleSeed}
-      >
-        SEED DB
-      </button>
-
       <TransactionFilters
         search={search}
         setSearch={setSearch}
@@ -106,13 +65,17 @@ export function TransactionsPageClient() {
         categories={categories}
       />
 
-      <TransactionTable
-        transactions={filteredData}
-        selectedIds={selectedIds}
-        setSelectedIds={setSelectedIds}
-        expandedId={expandedId}
-        setExpandedId={setExpandedId}
-      />
+      {isLoading || isRefreshing ? (
+        <TransactionsLoader />
+      ) : (
+        <TransactionTable
+          transactions={transactions}
+          selectedIds={selectedIds}
+          setSelectedIds={setSelectedIds}
+          expandedId={expandedId}
+          setExpandedId={setExpandedId}
+        />
+      )}
 
       <TransactionActions
         selectedCount={selectedIds.size}

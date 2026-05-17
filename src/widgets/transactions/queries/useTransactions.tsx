@@ -1,19 +1,26 @@
 "use client"
 
 import { useCallback, useRef } from "react"
-import { useUserTransactions } from "./queries"
+import { TransactionFilters } from "../model/get-user-transactions"
+import { useTransactionCategories, useUserTransactions } from "./queries"
 import { initData, useSignal } from "@tma.js/sdk-react"
+import { TransactionsLoader } from "../ui/transactions-loader"
 
-export const useTransactionsForTable = () => {
+export const useTransactionsForTable = (filters: TransactionFilters) => {
   const user = useSignal(initData.state)
+  const userId = String(user?.user?.id)
+  const enabled = !!user?.user?.id
 
   const {
     data: transactions,
     isLoading,
+    isFetching,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useUserTransactions(String(user?.user?.id), !!user?.user?.id)
+  } = useUserTransactions(userId, filters, enabled)
+
+  const { data: categories = [] } = useTransactionCategories(userId, enabled)
 
   const cursorRef = useIntersection(() => {
     fetchNextPage()
@@ -21,8 +28,7 @@ export const useTransactionsForTable = () => {
 
   const cursor = (
     <div ref={cursorRef}>
-      {/* {isFetchingNextPage && <UserPostSkeleton />} */}
-      {isFetchingNextPage && <div>Loading</div>}
+      {isFetchingNextPage && <TransactionsLoader variant="inline" />}
       {/* {!hasNextPage && (
         <div className="mt-2 text-2xl" color="danger">
           that's all transactions
@@ -31,7 +37,13 @@ export const useTransactionsForTable = () => {
     </div>
   )
 
-  return { transactions, isLoading, cursor }
+  return {
+    transactions,
+    isLoading,
+    isRefreshing: isFetching && !isFetchingNextPage,
+    categories,
+    cursor,
+  }
 }
 
 export function useIntersection(onIntersect: () => void) {
