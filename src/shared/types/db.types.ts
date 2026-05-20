@@ -1,12 +1,14 @@
+import { LucideIcon } from "lucide-react"
+
 export interface UserFromDB {
   createdAt: Date
-  firstName: string
+  firstName: string | null
   id: string
-  lastName: string
+  lastName: string | null
   photoUrl: null | string
   tgId: string
   updatedAt: Date
-  username: string
+  username: string | null
 }
 
 export type AccountCard = {
@@ -15,7 +17,13 @@ export type AccountCard = {
   balance: number
   currency: string
   last4: string
-  variant: "default" | "dark" | "primary"
+  variant: "default" | "dark" | "primary" | "savings" | "business" | "travel"
+}
+
+export type CardPreset = {
+  style: string
+  chipColor?: string
+  icon: LucideIcon
 }
 
 export type FullTransaction = {
