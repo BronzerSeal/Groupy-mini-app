@@ -8,6 +8,7 @@ type GetUserSuccess = {
   cards: {
     id: string
     label: string
+    balance: number
   }[]
 }
 
@@ -18,7 +19,7 @@ type GetUserError = {
 
 export type GetUserResponse = GetUserSuccess | GetUserError
 
-export const GetUserCardsName = async (
+export const GetUserCardsByUserId = async (
   userId: string
 ): Promise<GetUserResponse> => {
   try {
@@ -29,6 +30,7 @@ export const GetUserCardsName = async (
       select: {
         id: true,
         label: true,
+        balance: true,
       },
     })
     return { code: 200, status: "success", cards: cardsName }

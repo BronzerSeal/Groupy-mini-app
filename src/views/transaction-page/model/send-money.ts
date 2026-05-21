@@ -44,8 +44,9 @@ export const SendMoney = async (
   category = "send",
   merchantLogo: string | null,
   merchantId: string,
+  merchantCardId: string,
   notes: string | null,
-  cardLast4: string
+  cardLast4?: string
 ): Promise<SendMoneyResponse> => {
   try {
     if (!senderId || !merchantId || !senderCardId) {
@@ -120,7 +121,7 @@ export const SendMoney = async (
 
     const recipientCard = await (prisma.card.findFirst as any)({
       where: {
-        userId: recipientUser.tgId,
+        id: merchantCardId,
       },
       orderBy: {
         createdAt: "asc",
@@ -138,9 +139,8 @@ export const SendMoney = async (
     const senderDisplayName = getUserDisplayName(senderUser)
     const recipientDisplayName = getUserDisplayName(recipientUser)
     const transactionDate = new Date().toISOString()
-    const runTransaction = prisma.$transaction as any
 
-    const result = await runTransaction(async (tx: any) => {
+    const result = await prisma.$transaction(async (tx: any) => {
       const updatedSenderCard = await tx.card.update({
         where: {
           id: senderCard.id,

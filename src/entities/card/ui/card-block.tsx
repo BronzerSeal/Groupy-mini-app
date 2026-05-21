@@ -1,9 +1,14 @@
 import { cn } from "@/lib/utils"
 import { AccountCard, CardPreset } from "@/shared/types/db.types"
 
-const CardBlock = ({ card }: { card: AccountCard & CardPreset }) => {
+const CardBlock = ({
+  card,
+  selectedCardId,
+}: {
+  card: AccountCard & CardPreset
+  selectedCardId: string | undefined
+}) => {
   const Icon = card.icon
-
   return (
     <button
       className={cn(
@@ -12,6 +17,7 @@ const CardBlock = ({ card }: { card: AccountCard & CardPreset }) => {
         "transition-all duration-200",
         "active:scale-[0.98]",
         "shadow-sm",
+        selectedCardId === card.id && "border border-blue-300",
         card.style
       )}
     >

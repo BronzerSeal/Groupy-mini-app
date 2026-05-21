@@ -23,6 +23,7 @@ import {
   TableRow,
 } from "shared/ui/table"
 import { FullTransaction } from "@/shared/types/db.types"
+import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar"
 
 interface TransactionTableProps {
   transactions: FullTransaction[] | []
@@ -179,14 +180,10 @@ function TransactionRow({
 
         <TableCell>
           <div className="flex items-center gap-2.5">
-            <Image
-              src={tx.logo}
-              alt={tx.merchant}
-              width={32}
-              height={32}
-              className="size-8 rounded-lg object-cover"
-              unoptimized
-            />
+            <Avatar>
+              <AvatarImage src={tx.logo} />
+              <AvatarFallback>{tx.merchant.slice(0, 1)}</AvatarFallback>
+            </Avatar>
             <div className="min-w-0">
               <p className="truncate text-sm font-medium">{tx.merchant}</p>
               <Badge variant="secondary" className="mt-0.5 text-[10px]">

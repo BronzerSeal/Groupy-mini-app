@@ -15,7 +15,6 @@ const BottomNavigation = () => {
   if (!colors.bg_color) {
     return <BottomNavigationSkeleton />
   }
-  console.log(colors.bg_color)
 
   const { navStyle, activeItemStyle, inactiveItemStyle } = useColors(colors)
 

@@ -21,10 +21,11 @@ import {
 } from "@/shared/ui/select"
 import { initData, themeParams, useSignal } from "@tma.js/sdk-react"
 import { BadgePlus } from "lucide-react"
-import { useUpdateCardBalance, useUserCardsName } from "../queries/queries"
+import { useUpdateCardBalance } from "../queries/queries"
 import { ChangeEvent, useState } from "react"
 import { toast } from "sonner"
 import { IncreaseMoneyBtnLoader } from "./increase-money-btn-loader"
+import { useUserCardsName } from "@/entities/card"
 
 const IncreaseMoneyBtn = () => {
   const user = useSignal(initData.state)

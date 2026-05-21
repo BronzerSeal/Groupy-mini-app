@@ -18,11 +18,17 @@ type GetUserError = {
 export type GetUserResponse = GetUserSuccess | GetUserError
 
 export const GetUsersByName = async (
-  name: string
+  name: string,
+  searcherId: string
 ): Promise<GetUserResponse> => {
   try {
     const normalizedName = name.trim()
     const findManyUsers = prisma.user.findMany as any
+    const excludeCurrentUser = {
+      NOT: {
+        tgId: searcherId,
+      },
+    }
 
     if (!normalizedName) {
       return { message: "no username", status: "error", users: [] }
@@ -30,11 +36,13 @@ export const GetUsersByName = async (
 
     const usernameUsers = await findManyUsers({
       where: {
+        ...excludeCurrentUser,
         username: {
           contains: normalizedName,
           mode: "insensitive",
         },
       },
+
       take: 3,
     })
 
@@ -44,6 +52,7 @@ export const GetUsersByName = async (
 
     const firstNameUsers = await findManyUsers({
       where: {
+        ...excludeCurrentUser,
         firstName: {
           contains: normalizedName,
           mode: "insensitive",
@@ -57,6 +66,7 @@ export const GetUsersByName = async (
     }
 
     const lastNameUsers = await findManyUsers({
+      ...excludeCurrentUser,
       where: {
         lastName: {
           contains: normalizedName,

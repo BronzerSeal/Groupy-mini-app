@@ -1,20 +1,5 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { GetUserCardsName } from "../model/get-user-cards-name"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { IncreaseUserBalance } from "../model/increase-user-balance"
-
-export const useUserCardsName = (userId: string, enabled: boolean) => {
-  return useQuery({
-    queryKey: ["userCards-name", userId],
-    queryFn: () => GetUserCardsName(userId),
-    select: (data) => {
-      if (data.status === "error") {
-        throw new Error(data.message)
-      }
-      return data.cards
-    },
-    enabled,
-  })
-}
 
 export const useUpdateCardBalance = () => {
   const queryClient = useQueryClient()
