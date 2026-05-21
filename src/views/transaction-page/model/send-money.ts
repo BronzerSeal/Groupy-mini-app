@@ -140,7 +140,7 @@ export const SendMoney = async (
     const recipientDisplayName = getUserDisplayName(recipientUser)
     const transactionDate = new Date().toISOString()
 
-    const result = await prisma.$transaction(async (tx: any) => {
+    const result = await (prisma.$transaction as any)(async (tx: any) => {
       const updatedSenderCard = await tx.card.update({
         where: {
           id: senderCard.id,
