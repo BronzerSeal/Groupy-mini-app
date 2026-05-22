@@ -13,6 +13,9 @@ import { useSendMoney } from "../queries/queries"
 import { initData, useSignal } from "@tma.js/sdk-react"
 import { toast } from "sonner"
 
+const fieldSurfaceClassName =
+  "border-white/35 bg-slate-50/75 backdrop-blur-sm dark:border-white/10 dark:bg-slate-950/45"
+
 const TransactionPage = () => {
   const { userId: merchantId } = useParams<{ userId: string }>()
   const router = useRouter()
@@ -45,12 +48,17 @@ const TransactionPage = () => {
       return
     }
 
-    if (
-      !selectCardId ||
-      !user?.id ||
-      !merchantUser?.id ||
-      !selectMerchantCardId
-    ) {
+    if (!selectCardId) {
+      setError("choose your card")
+      return
+    }
+
+    if (!selectMerchantCardId) {
+      setError("choose merchand card")
+      return
+    }
+
+    if (!user?.id || !merchantUser?.id) {
       setError("no data provided")
       return
     }
@@ -94,7 +102,15 @@ const TransactionPage = () => {
       <section className="my-2">
         <h1 className="mb-1 text-xl font-semibold">How many</h1>
         <NoiseBackground
-          containerClassName=" [--noise-1:#f8fafc] [--noise-2:#e2f3ff] [--noise-3:#dff7ec] dark:[--noise-1:#0b1220] dark:[--noise-2:#112036] dark:[--noise-3:#0f2a24]"
+          containerClassName="
+    [--noise-1:rgb(226,232,240)]
+    [--noise-2:rgb(191,219,254)]
+    [--noise-3:rgb(216,180,254)]
+
+    dark:[--noise-1:rgb(17,24,39)]
+    dark:[--noise-2:rgb(30,41,59)]
+    dark:[--noise-3:rgb(49,46,129)]
+  "
           gradientColors={[
             "var(--noise-1)",
             "var(--noise-2)",
@@ -102,6 +118,7 @@ const TransactionPage = () => {
           ]}
         >
           <Input
+            className={fieldSurfaceClassName}
             disabled={!selectCardId}
             value={amount}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -119,7 +136,15 @@ const TransactionPage = () => {
       <section className="my-2">
         <h1 className="mb-1 text-xl font-semibold">Choose card: </h1>
         <NoiseBackground
-          containerClassName=" [--noise-1:#f8fafc] [--noise-2:#e2f3ff] [--noise-3:#dff7ec] dark:[--noise-1:#0b1220] dark:[--noise-2:#112036] dark:[--noise-3:#0f2a24]"
+          containerClassName="
+    [--noise-1:rgb(226,232,240)]
+    [--noise-2:rgb(191,219,254)]
+    [--noise-3:rgb(216,180,254)]
+
+    dark:[--noise-1:rgb(17,24,39)]
+    dark:[--noise-2:rgb(30,41,59)]
+    dark:[--noise-3:rgb(49,46,129)]
+  "
           gradientColors={[
             "var(--noise-1)",
             "var(--noise-2)",
@@ -130,6 +155,7 @@ const TransactionPage = () => {
             selectCardId={selectCardId}
             setSelectedCardId={setSelectedCardId}
             setMaxBalance={setMaxBalance}
+            triggerClassName={fieldSurfaceClassName}
           />
         </NoiseBackground>
       </section>
@@ -137,7 +163,15 @@ const TransactionPage = () => {
       <section>
         <h1 className="mb-1 text-xl font-semibold">Note: </h1>
         <NoiseBackground
-          containerClassName=" [--noise-1:#f8fafc] [--noise-2:#e2f3ff] [--noise-3:#dff7ec] dark:[--noise-1:#0b1220] dark:[--noise-2:#112036] dark:[--noise-3:#0f2a24]"
+          containerClassName="
+    [--noise-1:rgb(226,232,240)]
+    [--noise-2:rgb(191,219,254)]
+    [--noise-3:rgb(216,180,254)]
+
+    dark:[--noise-1:rgb(17,24,39)]
+    dark:[--noise-2:rgb(30,41,59)]
+    dark:[--noise-3:rgb(49,46,129)]
+  "
           gradientColors={[
             "var(--noise-1)",
             "var(--noise-2)",
@@ -145,6 +179,7 @@ const TransactionPage = () => {
           ]}
         >
           <Textarea
+            className={fieldSurfaceClassName}
             value={note}
             onChange={(e) => setNote(e.target.value)}
             placeholder="Type your message here."
@@ -153,8 +188,14 @@ const TransactionPage = () => {
       </section>
 
       <div className="mt-2 flex-col justify-center">
+        {error && (
+          <div className="mt-3 mb-2 flex items-center gap-2 rounded-xl border border-red-500/15 bg-red-500/5 px-4 py-3 text-sm text-red-400 backdrop-blur-sm">
+            <div className="h-2 w-2 rounded-full bg-red-500" />
+            <span>{error}</span>
+          </div>
+        )}
         <NoiseBackground
-          containerClassName="w-fit rounded-sm mx-auto"
+          containerClassName="w-fit rounded-sm mx-auto mb-18"
           gradientColors={[
             "rgb(255, 100, 150)",
             "rgb(100, 150, 255)",
@@ -168,12 +209,6 @@ const TransactionPage = () => {
             transfer {amount} dollars
           </button>
         </NoiseBackground>
-        {error && (
-          <div className="mt-3 mb-17 flex items-center gap-2 rounded-xl border border-red-500/15 bg-red-500/5 px-4 py-3 text-sm text-red-400 backdrop-blur-sm">
-            <div className="h-2 w-2 rounded-full bg-red-500" />
-            <span>{error}</span>
-          </div>
-        )}
       </div>
     </>
   )

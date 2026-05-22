@@ -163,6 +163,7 @@ export const SendMoney = async (
         },
       })
 
+      //creating transactions
       await tx.transaction.create({
         data: {
           transactionId,
@@ -198,6 +199,28 @@ export const SendMoney = async (
           merchantInfo: senderUser.username
             ? `@${senderUser.username}`
             : senderUser.tgId,
+        },
+      })
+
+      //update repepients array
+
+      await prisma.recentRecipient.upsert({
+        where: {
+          senderId_recipientId: {
+            senderId: senderUser.tgId,
+            recipientId: recipientUser.tgId,
+          },
+        },
+
+        update: {
+          sendCount: {
+            increment: 1,
+          },
+        },
+
+        create: {
+          senderId: senderUser.tgId,
+          recipientId: recipientUser.tgId,
         },
       })
 

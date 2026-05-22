@@ -23,7 +23,6 @@ export const GetUsersByName = async (
 ): Promise<GetUserResponse> => {
   try {
     const normalizedName = name.trim()
-    const findManyUsers = prisma.user.findMany as any
     const excludeCurrentUser = {
       NOT: {
         tgId: searcherId,
@@ -34,7 +33,7 @@ export const GetUsersByName = async (
       return { message: "no username", status: "error", users: [] }
     }
 
-    const usernameUsers = await findManyUsers({
+    const usernameUsers = await (prisma.user.findMany as any)({
       where: {
         ...excludeCurrentUser,
         username: {
@@ -50,7 +49,7 @@ export const GetUsersByName = async (
       return { code: 200, status: "success", users: usernameUsers }
     }
 
-    const firstNameUsers = await findManyUsers({
+    const firstNameUsers = await (prisma.user.findMany as any)({
       where: {
         ...excludeCurrentUser,
         firstName: {
@@ -65,9 +64,9 @@ export const GetUsersByName = async (
       return { code: 200, status: "success", users: firstNameUsers }
     }
 
-    const lastNameUsers = await findManyUsers({
-      ...excludeCurrentUser,
+    const lastNameUsers = await (prisma.user.findMany as any)({
       where: {
+        ...excludeCurrentUser,
         lastName: {
           contains: normalizedName,
           mode: "insensitive",

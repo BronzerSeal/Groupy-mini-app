@@ -13,17 +13,20 @@ datasource db {
 }
 
 model User {
-  id            String   @id @default(cuid())
-  tgId          String   @unique
-  username      String?
-  firstName     String?
-  lastName      String?
-  photoUrl      String?
-  cards         Card[]
-  transactions  Transaction[]
+  id              String   @id @default(cuid())
+  tgId            String   @unique
+  username        String?
+  firstName       String?
+  lastName        String?
+  photoUrl        String?
+  cards           Card[]
+  transactions    Transaction[]
 
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  recentSent      RecentRecipient[] @relation("RecentSenders")
+  recentReceived  RecentRecipient[] @relation("RecentRecipients")
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
   @@map("users")
 }
@@ -84,4 +87,20 @@ merchantInfo  String?
 
 createdAt     DateTime @default(now())
 updatedAt     DateTime @updatedAt
+}
+
+model RecentRecipient {
+  id            String   @id @default(cuid())
+
+  senderId      String
+  recipientId   String
+  sender        User @relation("RecentSenders", fields: [senderId], references: [tgId], onDelete: Cascade)
+  recipient     User @relation("RecentRecipients", fields: [recipientId], references: [tgId], onDelete: Cascade)
+
+  sendCount     Int      @default(1)
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  @@unique([senderId, recipientId])
 }

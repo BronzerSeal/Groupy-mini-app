@@ -16,12 +16,14 @@ interface Props {
   selectCardId: string | undefined
   setSelectedCardId: Dispatch<SetStateAction<string | undefined>>
   setMaxBalance: Dispatch<SetStateAction<number>>
+  triggerClassName?: string
 }
 
 const SelectCard: FC<Props> = ({
   selectCardId,
   setSelectedCardId,
   setMaxBalance,
+  triggerClassName,
 }) => {
   const user = useSignal(initData.user)
 
@@ -56,7 +58,7 @@ const SelectCard: FC<Props> = ({
         }}
         itemToStringValue={(card) => card.label}
       >
-        <SelectTrigger className="py-1">
+        <SelectTrigger className={`py-1 ${triggerClassName ?? ""}`}>
           <SelectValue>
             {(card) => (
               <span className="flex flex-col">
