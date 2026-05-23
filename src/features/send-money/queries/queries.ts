@@ -53,6 +53,18 @@ export const useSendMoneyMutation = () => {
       queryClient.invalidateQueries({
         queryKey: ["userRecepients", variables.senderId],
       })
+
+      queryClient.invalidateQueries({
+        queryKey: ["userQuickRecepients", variables.senderId],
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: ["userRecepients", variables.senderId],
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: ["userCards-name", variables.senderId],
+      })
     },
     retry: 1,
   })

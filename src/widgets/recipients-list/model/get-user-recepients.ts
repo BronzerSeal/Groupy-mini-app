@@ -1,17 +1,19 @@
 "use server"
 
 import prisma from "@/utils/prisma"
-import { RecentRecipientDto, recentRecipientsSelect } from "./types"
+import { Recipient, recipientSelect } from "./types"
 
 type GetUserRecepientsSuccess = {
   status: "success"
   code: 200
-  recepients: RecentRecipientDto[]
+  recepients: Recipient[]
+  nextCursor: string | undefined
 }
 
 type GetUserRecepientsError = {
   status: "error"
   message: string
+  recepients: []
 }
 
 export type GetUserRecepientsResponse =
@@ -19,35 +21,54 @@ export type GetUserRecepientsResponse =
   | GetUserRecepientsError
 
 export const getUserRecepientsById = async (
-  userId: string
+  userId: string,
+  options?: {
+    cursor?: string
+  }
 ): Promise<GetUserRecepientsResponse> => {
+  const RES_SIZE = 10
   try {
     const recepients = await (prisma.recentRecipient.findMany as any)({
       where: {
         senderId: userId,
       },
-
-      ...recentRecipientsSelect,
-
+      select: { ...recipientSelect },
       orderBy: {
-        updatedAt: "desc",
+        sendCount: "desc",
       },
-      take: 6,
+
+      take: RES_SIZE + 1,
+
+      ...(options?.cursor && {
+        cursor: {
+          id: options.cursor,
+        },
+        skip: 1,
+      }),
     })
+
+    let nextCursor: string | undefined = undefined
+
+    if (recepients.length > RES_SIZE) {
+      const nextItem = recepients.pop()
+      nextCursor = nextItem?.id
+    }
 
     return {
       status: "success",
       code: 200,
       recepients,
+      nextCursor,
     }
   } catch (error) {
-    console.error("Error getting user recepients:", error)
+    console.error("Error getting user balance:", error)
 
     return {
       status: "error",
-      message: `Error getting user recepients: ${
+      message: `Error getting user balance: ${
         error instanceof Error ? error.message : String(error)
       }`,
+      recepients: [],
     }
   }
 }

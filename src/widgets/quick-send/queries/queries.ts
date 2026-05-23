@@ -3,7 +3,7 @@ import { getUserRecepientsById } from "../model/get-last-recepients"
 
 export const useUserRecepients = (userId: string, enabled: boolean) => {
   return useQuery({
-    queryKey: ["userRecepients", userId],
+    queryKey: ["userQuickRecepients", userId],
     queryFn: () => getUserRecepientsById(userId),
     select: (data) => {
       if (data.status === "error") {
