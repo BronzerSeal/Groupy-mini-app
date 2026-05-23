@@ -51,14 +51,14 @@ export async function POST(req: NextRequest) {
 
     let user = await (prisma.user.findUnique as any)({
       where: {
-        tgId: parsedUser?.id,
+        tgId: String(parsedUser?.id),
       },
     })
 
     if (!user) {
       user = await prisma.user.create({
         data: {
-          tgId: parsedUser?.id,
+          tgId: String(parsedUser?.id),
           username: parsedUser.username,
           firstName: parsedUser.first_name,
           lastName: parsedUser.last_name,
@@ -68,9 +68,9 @@ export async function POST(req: NextRequest) {
 
       await prisma.card.createMany({
         data: [
-          { ...accountCards[0], userId: user.tgId },
-          { ...accountCards[1], userId: user.tgId },
-          { ...accountCards[2], userId: user.tgId },
+          { ...accountCards[0], userId: String(user.tgId) },
+          { ...accountCards[1], userId: String(user.tgId) },
+          { ...accountCards[2], userId: String(user.tgId) },
         ],
       })
     }

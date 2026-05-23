@@ -9,7 +9,7 @@ export type CreateCardInput = {
   currency: string
   last4: string
   variant: CardVariant
-  userId: number
+  userId: string
 }
 
 type CreateCardSuccess = {

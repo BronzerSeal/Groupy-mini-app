@@ -17,12 +17,12 @@ type GetUserCardsError = {
 export type GetUserCardsResponse = GetUserCardsSuccess | GetUserCardsError
 
 export const GetUserCardsById = async (
-  userId: number
+  userId: string
 ): Promise<GetUserCardsResponse> => {
   try {
     const accountCards = await (prisma.card.findMany as any)({
       where: {
-        userId,
+        userId: String(userId),
       },
     })
     return { code: 200, status: "success", cards: accountCards }
