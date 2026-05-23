@@ -19,7 +19,7 @@ interface Props {
   triggerClassName?: string
 }
 
-const SelectCard: FC<Props> = ({
+export const SelectUserCard: FC<Props> = ({
   selectCardId,
   setSelectedCardId,
   setMaxBalance,
@@ -45,7 +45,8 @@ const SelectCard: FC<Props> = ({
   if (isLoading) return null
   if (!userCards?.length) return <div>no cards</div>
 
-  const selectedCard = userCards.find((card) => card.id === selectCardId) ?? userCards[0]
+  const selectedCard =
+    userCards.find((card) => card.id === selectCardId) ?? userCards[0]
 
   return (
     <>
@@ -95,5 +96,3 @@ const SelectCard: FC<Props> = ({
     </>
   )
 }
-
-export default SelectCard

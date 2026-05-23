@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { SendMoney } from "../model/send-money"
 
-export const useSendMoney = () => {
+export const useSendMoneyMutation = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
@@ -11,32 +11,26 @@ export const useSendMoney = () => {
       senderCardId,
       amount,
       category,
-      merchantLogo,
       merchantId,
       merchantCardId,
       notes,
-      cardLast4,
     }: {
       senderId: string
       senderCardId: string
       amount: number
       category?: string
-      merchantLogo: string | null
       merchantId: string
       merchantCardId: string
       notes: string | null
-      cardLast4?: string
     }) =>
       SendMoney(
         senderId,
         senderCardId,
         amount,
         category,
-        merchantLogo,
         merchantId,
         merchantCardId,
-        notes,
-        cardLast4
+        notes
       ),
 
     onSuccess: (_, variables) => {
@@ -54,6 +48,10 @@ export const useSendMoney = () => {
 
       queryClient.invalidateQueries({
         queryKey: ["userTransactions", variables.merchantId],
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: ["userRecepients", variables.senderId],
       })
     },
     retry: 1,

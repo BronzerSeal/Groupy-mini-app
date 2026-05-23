@@ -6,19 +6,17 @@ import CarouselSection from "./carousel-section"
 import { Input } from "@/shared/ui/input"
 
 import { ChangeEvent, useState } from "react"
-import SelectCard from "./select-card"
 import { Textarea } from "@/shared/ui/textarea"
 import { NoiseBackground } from "@/shared/ui/noise-bg"
-import { useSendMoney } from "../queries/queries"
 import { initData, useSignal } from "@tma.js/sdk-react"
-import { toast } from "sonner"
+import { useSendMoney } from "@/features/send-money"
+import { SelectUserCard } from "@/features/select-cards"
 
 const fieldSurfaceClassName =
   "border-white/35 bg-slate-50/75 backdrop-blur-sm dark:border-white/10 dark:bg-slate-950/45"
 
 const TransactionPage = () => {
   const { userId: merchantId } = useParams<{ userId: string }>()
-  const router = useRouter()
   const user = useSignal(initData.user)
   const [selectCardId, setSelectedCardId] = useState<string | undefined>(
     undefined
@@ -26,7 +24,6 @@ const TransactionPage = () => {
   const [selectMerchantCardId, setSelectMerchantCardId] = useState<
     string | undefined
   >(undefined)
-  const { mutate: sendMoney } = useSendMoney()
 
   const [maxBalance, setMaxBalance] = useState(0)
   const [amount, setAmount] = useState("")
@@ -34,51 +31,27 @@ const TransactionPage = () => {
   const [error, setError] = useState("")
 
   const { data: merchantUser } = UseUserInfoById(merchantId, true, !!merchantId)
+  const { submit } = useSendMoney()
+  const handleSubmit = async () => {
+    const result = await submit({
+      amount: +amount,
+      maxBalance,
+      selectCardId,
+      selectMerchantCardId,
+      userId: user?.id,
+      merchantId: merchantUser?.id,
+      senderId: String(user?.id),
+      senderCardId: selectCardId ?? "",
+      notes: note,
+      pushToHome: true,
+    })
 
-  const handleSubmit = () => {
+    if (!result.success) {
+      setError(result.error)
+      return
+    }
+
     setError("")
-
-    if (+amount < 1) {
-      setError("you can't send less than 1")
-      return
-    }
-
-    if (+amount > maxBalance) {
-      setError("not enough money")
-      return
-    }
-
-    if (!selectCardId) {
-      setError("choose your card")
-      return
-    }
-
-    if (!selectMerchantCardId) {
-      setError("choose merchand card")
-      return
-    }
-
-    if (!user?.id || !merchantUser?.id) {
-      setError("no data provided")
-      return
-    }
-
-    try {
-      sendMoney({
-        senderId: String(user.id),
-        senderCardId: selectCardId,
-        amount: +amount,
-        merchantLogo: merchantUser?.photoUrl ?? null,
-        merchantId: merchantUser?.id,
-        merchantCardId: selectMerchantCardId,
-        notes: note,
-      })
-      toast.success("success")
-      router.push("/")
-    } catch {
-      setError("something went wrong")
-      toast.error("something went wrong. Try again later")
-    }
   }
   return (
     <>
@@ -151,7 +124,7 @@ const TransactionPage = () => {
             "var(--noise-3)",
           ]}
         >
-          <SelectCard
+          <SelectUserCard
             selectCardId={selectCardId}
             setSelectedCardId={setSelectedCardId}
             setMaxBalance={setMaxBalance}
@@ -188,12 +161,12 @@ const TransactionPage = () => {
       </section>
 
       <div className="mt-2 flex-col justify-center">
-        {error && (
+        {/* {error && (
           <div className="mt-3 mb-2 flex items-center gap-2 rounded-xl border border-red-500/15 bg-red-500/5 px-4 py-3 text-sm text-red-400 backdrop-blur-sm">
             <div className="h-2 w-2 rounded-full bg-red-500" />
             <span>{error}</span>
           </div>
-        )}
+        )} */}
         <NoiseBackground
           containerClassName="w-fit rounded-sm mx-auto mb-18"
           gradientColors={[

@@ -42,11 +42,10 @@ export const SendMoney = async (
   senderCardId: string,
   amount: number,
   category = "send",
-  merchantLogo: string | null,
   merchantId: string,
   merchantCardId: string,
   notes: string | null,
-  cardLast4?: string
+  merchantLogo?: string
 ): Promise<SendMoneyResponse> => {
   try {
     if (!senderId || !merchantId || !senderCardId) {
@@ -176,7 +175,7 @@ export const SendMoney = async (
           status: "completed",
           type: "expense",
           notes,
-          cardLast4: cardLast4 || senderCard.last4,
+          cardLast4: senderCard.last4,
           merchantInfo: recipientUser.username
             ? `@${recipientUser.username}`
             : recipientUser.tgId,
