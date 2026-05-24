@@ -3,6 +3,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar"
 import { useRecepients } from "../queries/useRecepients"
 import { RecipientsListSkeleton } from "./recipient-list-skeleton"
+import Link from "next/link"
 
 const RecipientsList = () => {
   const { recepients: recepientsFromDB, isLoading, cursor } = useRecepients()
@@ -20,24 +21,24 @@ const RecipientsList = () => {
   return (
     <section className="mt-3 flex flex-col gap-2">
       {recipients.map((recipient) => (
-        <div
-          className="flex items-center justify-between rounded-sm rounded-xl bg-[#f3f6fb] p-2 dark:bg-[#141c2e]"
-          key={recipient.tgId}
-        >
-          <div className="min-w-0">
-            <h1 className="truncate text-base font-semibold tracking-tight">
-              {recipient.firstName ?? "name"} {recipient.lastName ?? "lastname"}
-            </h1>
+        <Link href={`transaction/${recipient.tgId}`} key={recipient.tgId}>
+          <div className="flex items-center justify-between rounded-sm rounded-xl bg-[#f3f6fb] p-2 dark:bg-[#141c2e]">
+            <div className="min-w-0">
+              <h1 className="truncate text-base font-semibold tracking-tight">
+                {recipient.firstName ?? "name"}{" "}
+                {recipient.lastName ?? "lastname"}
+              </h1>
 
-            <p className="truncate text-sm text-muted-foreground">
-              @{recipient.username ?? "username"}
-            </p>
+              <p className="truncate text-sm text-muted-foreground">
+                @{recipient.username ?? "username"}
+              </p>
+            </div>
+            <Avatar size="lg">
+              <AvatarImage src={recipient.photoUrl ?? undefined} />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
           </div>
-          <Avatar size="lg">
-            <AvatarImage src={recipient.photoUrl ?? undefined} />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
-        </div>
+        </Link>
       ))}
       {cursor}
     </section>
