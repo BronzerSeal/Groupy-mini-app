@@ -15,7 +15,6 @@ const RecipientsList = () => {
   if (!recepientsFromDB?.length) {
     return null
   }
-  console.log(recepientsFromDB)
   const recipients = recepientsFromDB.map((r) => r.recipient)
 
   return (

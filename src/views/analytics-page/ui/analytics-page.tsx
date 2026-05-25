@@ -1,3 +1,4 @@
+import CategoryDonut from "@/widgets/category-donut"
 import { SpendingHeatmap } from "@/widgets/spending-heatmap"
 
 const AnalyticsPage = () => {
@@ -7,6 +8,10 @@ const AnalyticsPage = () => {
 
       <section className="mt-2">
         <SpendingHeatmap />
+      </section>
+
+      <section className="mt-2 mb-17">
+        <CategoryDonut />
       </section>
     </>
   )
