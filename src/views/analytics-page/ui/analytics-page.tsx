@@ -1,4 +1,5 @@
 import CategoryDonut from "@/widgets/category-donut"
+import { MonthComparison } from "@/widgets/month-comparison"
 import { SpendingHeatmap } from "@/widgets/spending-heatmap"
 
 const AnalyticsPage = () => {
@@ -10,8 +11,9 @@ const AnalyticsPage = () => {
         <SpendingHeatmap />
       </section>
 
-      <section className="mt-2 mb-17">
+      <section className="mt-2 mb-17 grid gap-4 lg:grid-cols-2">
         <CategoryDonut />
+        <MonthComparison />
       </section>
     </>
   )
