@@ -19,5 +19,5 @@ export const NAV_PAGES: NavPage[] = [
   { label: "Friends", href: "/friends", icon: User },
   { label: "Analytics", href: "/analytics", icon: ChartColumnIncreasing },
   { label: "Settings", href: "/settings", icon: Settings },
-  { label: "Help", href: "/help", icon: CircleHelp },
+  { label: "Support", href: "/support", icon: CircleHelp },
 ]
