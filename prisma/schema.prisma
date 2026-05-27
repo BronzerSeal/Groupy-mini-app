@@ -104,3 +104,17 @@ model RecentRecipient {
   
   @@unique([senderId, recipientId])
 }
+
+enum Send {
+  bot 
+  user
+}
+
+model ChatMessage {
+  id     String   @id @default(cuid())
+  userId String
+  sender Send
+  text   String
+
+  @@map("ChatMessages")
+}
