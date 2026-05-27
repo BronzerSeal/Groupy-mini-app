@@ -4,15 +4,15 @@ import { TabId } from "../model/types"
 import { FaqTab } from "./faq-tab"
 import RenderTabs from "./render-tabs"
 import ContactTab from "./contact-tab"
+import StatusTab from "./status-tab"
 
 const SupportPage = () => {
   const [activeTab, setActiveTab] = useState<TabId>("faq")
 
   const tabContent: Record<TabId, React.ReactNode> = {
-    // status: <StatusTab />,
     faq: <FaqTab />,
     contact: <ContactTab />,
-    status: <p />,
+    status: <StatusTab />,
   }
 
   return (

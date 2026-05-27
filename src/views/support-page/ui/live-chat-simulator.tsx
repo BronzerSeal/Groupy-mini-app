@@ -11,19 +11,16 @@ import { useChatMessages, useCreateChatMessage } from "../queries/queries"
 import { initData, useSignal } from "@tma.js/sdk-react"
 
 export default function LiveChatSimulator() {
-  // const [messages, setMessages] = useState<ChatMessage[]>(botWelcome)
-  const [input, setInput] = useState("")
-  const [typing, setTyping] = useState(false)
-  const responseIdx = useRef(0)
-  const scrollRef = useRef<HTMLDivElement>(null)
-
-  //BD LOGIC
   const user = useSignal(initData.state)
   const { data: messages } = useChatMessages(
     String(user?.user?.id),
     !!user?.user?.id
   )
   const { mutate: createMessage } = useCreateChatMessage()
+  const [input, setInput] = useState("")
+  const [typing, setTyping] = useState(false)
+  const responseIdx = useRef(0)
+  const scrollRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     scrollRef.current?.scrollTo({
@@ -62,7 +59,6 @@ export default function LiveChatSimulator() {
       1200 + Math.random() * 800
     )
   }
-  // console.log(messages)
   return (
     <Card className="overflow-hidden">
       {/* Chat header */}

@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { botWelcome } from "../consts/bot-constants"
 import { getChatMessages } from "../model/get-chat-messages"
 import { CreateChatMessage } from "../model/create-chat-message"
 
@@ -10,6 +11,14 @@ export const useChatMessages = (userId: string, enabled: boolean) => {
       if (data.status === "error") {
         throw new Error(data.message)
       }
+
+      if (data.messages.length === 0) {
+        return botWelcome.map((message) => ({
+          ...message,
+          userId,
+        }))
+      }
+
       return data.messages
     },
     enabled,
@@ -20,7 +29,7 @@ export const useCreateChatMessage = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationKey: ["create-chat-message"],
+    mutationKey: ["increase-user-balance"],
     mutationFn: ({
       userId,
       sender,
