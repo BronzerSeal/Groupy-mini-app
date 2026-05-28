@@ -12,9 +12,10 @@ import {
   ChartTooltipContent,
 } from "shared/ui/chart"
 import { useUserTransactions } from "../queries/queries"
-import { initData, useSignal } from "@tma.js/sdk-react"
+import { initData, themeParams, useSignal } from "@tma.js/sdk-react"
 import { useCategoryDonut } from "../model/use-category-donut"
 import { CategoryDonutSkeleton } from "./category-donut-skeleton"
+import { Highlighter } from "@/shared/ui/highlighter"
 
 export default function CategoryDonut() {
   const user = useSignal(initData.state)
@@ -22,6 +23,7 @@ export default function CategoryDonut() {
     String(user?.user?.id),
     !!user?.user?.id
   )
+  const { hint_color: highlighterColor } = useSignal(themeParams.state)
 
   const [selected, setSelected] = useState<string | null>(null)
 
@@ -34,9 +36,11 @@ export default function CategoryDonut() {
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle>
-            {selectedCategory
-              ? selectedCategory.category
-              : "Spending by Category"}
+            <Highlighter action="circle" color={highlighterColor} padding={10}>
+              {selectedCategory
+                ? selectedCategory.category
+                : "Spending by Category"}
+            </Highlighter>
           </CardTitle>
           {selectedCategory && (
             <Button

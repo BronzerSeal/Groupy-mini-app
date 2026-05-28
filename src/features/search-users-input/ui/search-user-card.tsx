@@ -41,8 +41,8 @@ export const SearchUserCard = ({ user }: Props) => {
             </span>
           </div>
 
-          <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-            <span className="rounded-full bg-muted/80 px-2.5 py-1">
+          <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+            <span className="rounded-full bg-muted/80">
               {user.username ? `@${user.username}` : "no username"}
             </span>
             <span className="rounded-full bg-muted/60 px-2.5 py-1">

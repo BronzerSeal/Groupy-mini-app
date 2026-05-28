@@ -15,7 +15,7 @@ import {
   TooltipTrigger,
 } from "shared/ui/tooltip"
 import { useUserSpendingData } from "../queries/queries"
-import { initData, useSignal } from "@tma.js/sdk-react"
+import { initData, themeParams, useSignal } from "@tma.js/sdk-react"
 import { useSpendingHeatmap } from "../model/use-spending-heatmap"
 import { intensityClass } from "../model/intensity-class"
 import {
@@ -25,6 +25,7 @@ import {
   TOUCH_TARGET_OFFSET,
   TOUCH_TARGET_SIZE,
 } from "../consts/constants"
+import { Highlighter } from "@/shared/ui/highlighter"
 
 export function SpendingHeatmap() {
   const user = useSignal(initData.state)
@@ -38,6 +39,8 @@ export function SpendingHeatmap() {
     !!user?.user?.id
   )
 
+  const { link_color: highlighterColor } = useSignal(themeParams.state)
+
   const safeData = spendingHeatmapData ?? []
 
   const { grid, monthLabels, yearTotal, max } = useSpendingHeatmap(safeData)
@@ -47,7 +50,9 @@ export function SpendingHeatmap() {
       <CardHeader>
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <CardTitle>Spending Activity</CardTitle>
+            <Highlighter action="underline" color={highlighterColor}>
+              <CardTitle>Spending Activity</CardTitle>
+            </Highlighter>
             <CardDescription>
               <span className="font-medium text-foreground tabular-nums">
                 ${yearTotal.toLocaleString()}

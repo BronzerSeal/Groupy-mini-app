@@ -5,6 +5,7 @@ import { FaqTab } from "./faq-tab"
 import RenderTabs from "./render-tabs"
 import ContactTab from "./contact-tab"
 import StatusTab from "./status-tab"
+import { SquigglyText } from "@/shared/ui/squiggly-text"
 
 const SupportPage = () => {
   const [activeTab, setActiveTab] = useState<TabId>("faq")
@@ -20,7 +21,9 @@ const SupportPage = () => {
       {/* Header */}
       <div className="space-y-1">
         <h1 className="text-2xl font-semibold tracking-tight">
-          Help & Support
+          <SquigglyText steps={12} stepDuration={120} scale={[3, 5]}>
+            Help & Support
+          </SquigglyText>
         </h1>
         <p className="text-sm text-muted-foreground">
           Find answers, chat with us, submit tickets, and check system status

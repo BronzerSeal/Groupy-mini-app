@@ -1,3 +1,4 @@
+import { SquigglyText } from "@/shared/ui/squiggly-text"
 import CategoryDonut from "@/widgets/category-donut"
 import { MonthComparison } from "@/widgets/month-comparison"
 import { SpendingHeatmap } from "@/widgets/spending-heatmap"
@@ -5,7 +6,11 @@ import { SpendingHeatmap } from "@/widgets/spending-heatmap"
 const AnalyticsPage = () => {
   return (
     <>
-      <h1 className="text-2xl font-bold">Analytics</h1>
+      <h1 className="text-2xl font-bold">
+        <SquigglyText steps={12} stepDuration={120} scale={[3, 5]}>
+          Analytics
+        </SquigglyText>
+      </h1>
 
       <section className="mt-2">
         <SpendingHeatmap />

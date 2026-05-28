@@ -15,14 +15,16 @@ import {
   ChartTooltipContent,
 } from "shared/ui/chart"
 import { useAmountComparisons } from "../queries/queries"
-import { initData, useSignal } from "@tma.js/sdk-react"
+import { initData, themeParams, useSignal } from "@tma.js/sdk-react"
 import type { MonthComparison } from "../model/get-amount-comparisons"
 import { chartConfig } from "../consts/chart-config"
 import { createChangeLabel } from "../model/create-change-label"
 import { MonthComparisonSkeleton } from "./month-comparison-skeleton"
+import { Highlighter } from "@/shared/ui/highlighter"
 
 export function MonthComparison() {
   const user = useSignal(initData.state)
+  const { button_color: highlighterColor } = useSignal(themeParams.state)
 
   const { data: monthComparisons, isLoading } = useAmountComparisons(
     String(user?.user?.id),
@@ -47,7 +49,15 @@ export function MonthComparison() {
       <CardHeader>
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle>Month vs Last Month</CardTitle>
+            <CardTitle>
+              <Highlighter action="highlight" color={highlighterColor}>
+                Month
+              </Highlighter>{" "}
+              vs{" "}
+              <Highlighter action="highlight" color={highlighterColor}>
+                Last Month
+              </Highlighter>
+            </CardTitle>
             <CardDescription>
               <span className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
                 <span className="flex items-center gap-1.5">
