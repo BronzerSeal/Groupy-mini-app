@@ -22,7 +22,7 @@ import {
 import { initData, themeParams, useSignal } from "@tma.js/sdk-react"
 import { BadgePlus } from "lucide-react"
 import { useUpdateCardBalance } from "../queries/queries"
-import { ChangeEvent, useState } from "react"
+import { ChangeEvent, useEffect, useState } from "react"
 import { toast } from "sonner"
 import { IncreaseMoneyBtnLoader } from "./increase-money-btn-loader"
 import { useUserCardsName } from "@/entities/card"
@@ -37,23 +37,36 @@ const IncreaseMoneyBtn = () => {
   } = useUserCardsName(String(user?.user?.id!), !!user?.user?.id)
 
   //update Balance
-  const { mutate, isSuccess } = useUpdateCardBalance()
+  const { mutateAsync, isPending } = useUpdateCardBalance()
   const [selectCardId, setSelectedCardId] = useState(cards?.[0]?.id)
   const [amount, setAmount] = useState(0)
 
-  const handleUpdateBalance = () => {
-    if (!user?.user?.id || !selectCardId) return
-    mutate({
-      userId: String(user?.user.id),
-      cardId: selectCardId,
-      amount,
-    })
+  useEffect(() => {
+    if (!selectCardId && cards?.length) {
+      setSelectedCardId(cards[0].id)
+    }
+  }, [cards, selectCardId])
 
-    if (isSuccess) {
+  const handleUpdateBalance = async () => {
+    if (!user?.user?.id || !selectCardId) return
+
+    try {
+      const result = await mutateAsync({
+        userId: String(user?.user.id),
+        cardId: selectCardId,
+        amount,
+      })
+
+      if (result.status === "error") {
+        toast.error(result.message)
+        return
+      }
+
       setSelectedCardId(undefined)
       setAmount(0)
       toast.success("Succesfull updated")
-    } else {
+    } catch (error) {
+      console.error(error)
       toast.error("Something went wrong. Try again later")
     }
   }
@@ -124,6 +137,7 @@ const IncreaseMoneyBtn = () => {
                 color: button_text_color,
               }}
               variant="outline"
+              disabled={isPending}
               onClick={handleUpdateBalance}
             >
               Send

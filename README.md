@@ -4,6 +4,12 @@ Telegram Mini App for peer-to-peer money transfers, contact discovery, card mana
 
 Built with `Next.js 16`, `React 19`, `TypeScript`, `Tailwind CSS v4`, `Prisma`, `PostgreSQL`, `@tanstack/react-query`, and `@tma.js/sdk-react`.
 
+Live Telegram Mini App: https://web.telegram.org/a/#8698597747
+
+## Preview
+
+![Groupy home screen](public/home-page.png)
+
 ## What The App Does
 
 - Authenticates users through Telegram `initData`
@@ -14,6 +20,8 @@ Built with `Next.js 16`, `React 19`, `TypeScript`, `Tailwind CSS v4`, `Prisma`, 
 - Supports sending money between users' cards
 - Stores outgoing and incoming transactions
 - Tracks recent recipients for quick-send and friends list flows
+- Provides a settings area for theme, privacy, and app preferences
+- Includes a support page for help and service information
 
 ## Main Screens
 
@@ -22,6 +30,15 @@ Built with `Next.js 16`, `React 19`, `TypeScript`, `Tailwind CSS v4`, `Prisma`, 
 
 - `/friends`  
   Search users, quick-send to recent recipients, and browse the recipients list
+
+- `/analytics`  
+  View spending analytics and monthly breakdowns
+
+- `/settings`  
+  Manage theme, notifications, privacy, and app info
+
+- `/support`  
+  Access help, FAQ, and service status
 
 - `/transaction/[userId]`  
   Dedicated transfer flow for sending money to a chosen user
@@ -207,4 +224,5 @@ public/
 - The app is already wired for Telegram Mini App usage
 - Prisma client generation runs on `postinstall`
 - React Query is used heavily for server-state synchronization
+- The app now has dedicated settings and support experiences
 - The repository currently does not appear to include automated tests

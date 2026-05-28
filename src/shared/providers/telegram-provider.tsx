@@ -6,6 +6,7 @@ import { bootstrapTelegram } from "shared/lib/telegram/bootstrap"
 
 export function TelegramProvider({ children }: PropsWithChildren) {
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading")
+  const [themeReady, setThemeReady] = useState(false)
 
   useEffect(() => {
     bootstrapTelegram()
@@ -17,6 +18,24 @@ export function TelegramProvider({ children }: PropsWithChildren) {
         setStatus("error")
       })
   }, [])
+
+  useEffect(() => {
+    if (status !== "ready") return
+
+    const checkTheme = () => {
+      const bg = getComputedStyle(document.documentElement).getPropertyValue(
+        "--tg-theme-bg-color"
+      )
+
+      if (bg) {
+        setThemeReady(true)
+      } else {
+        requestAnimationFrame(checkTheme)
+      }
+    }
+
+    checkTheme()
+  }, [status])
 
   if (status === "loading") {
     return (

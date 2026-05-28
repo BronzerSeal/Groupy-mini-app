@@ -1,7 +1,7 @@
 "use client"
 import { UseUserInfoById } from "@/features/auth"
 import UserBlock from "@/entities/user"
-import { useParams, useRouter } from "next/navigation"
+import { useParams } from "next/navigation"
 import CarouselSection from "./carousel-section"
 import { Input } from "@/shared/ui/input"
 
@@ -11,6 +11,9 @@ import { NoiseBackground } from "@/shared/ui/noise-bg"
 import { initData, useSignal } from "@tma.js/sdk-react"
 import { useSendMoney } from "@/features/send-money"
 import { SelectUserCard } from "@/features/select-cards"
+import { SelectCategory } from "./select-category"
+import { CATEGORIES } from "shared/constants/CATEGORIES"
+import { FieldWrapper } from "../model/field-wrapper"
 
 const fieldSurfaceClassName =
   "border-white/35 bg-slate-50/75 backdrop-blur-sm dark:border-white/10 dark:bg-slate-950/45"
@@ -21,6 +24,7 @@ const TransactionPage = () => {
   const [selectCardId, setSelectedCardId] = useState<string | undefined>(
     undefined
   )
+  const [selectCategoryId, setSelectedCategoryId] = useState("0")
   const [selectMerchantCardId, setSelectMerchantCardId] = useState<
     string | undefined
   >(undefined)
@@ -42,6 +46,7 @@ const TransactionPage = () => {
       merchantId: merchantUser?.id,
       senderId: String(user?.id),
       senderCardId: selectCardId ?? "",
+      category: CATEGORIES[+selectCategoryId].label,
       notes: note,
       pushToHome: true,
     })
@@ -53,6 +58,7 @@ const TransactionPage = () => {
 
     setError("")
   }
+
   return (
     <>
       <h1 className="text-2xl font-bold">New payment</h1>
@@ -74,22 +80,8 @@ const TransactionPage = () => {
 
       <section className="my-2">
         <h1 className="mb-1 text-xl font-semibold">How many</h1>
-        <NoiseBackground
-          containerClassName="
-    [--noise-1:rgb(226,232,240)]
-    [--noise-2:rgb(191,219,254)]
-    [--noise-3:rgb(216,180,254)]
 
-    dark:[--noise-1:rgb(17,24,39)]
-    dark:[--noise-2:rgb(30,41,59)]
-    dark:[--noise-3:rgb(49,46,129)]
-  "
-          gradientColors={[
-            "var(--noise-1)",
-            "var(--noise-2)",
-            "var(--noise-3)",
-          ]}
-        >
+        <FieldWrapper>
           <Input
             className={fieldSurfaceClassName}
             disabled={!selectCardId}
@@ -103,61 +95,42 @@ const TransactionPage = () => {
             max={maxBalance}
             required
           />
-        </NoiseBackground>
+        </FieldWrapper>
       </section>
 
       <section className="my-2">
         <h1 className="mb-1 text-xl font-semibold">Choose card: </h1>
-        <NoiseBackground
-          containerClassName="
-    [--noise-1:rgb(226,232,240)]
-    [--noise-2:rgb(191,219,254)]
-    [--noise-3:rgb(216,180,254)]
-
-    dark:[--noise-1:rgb(17,24,39)]
-    dark:[--noise-2:rgb(30,41,59)]
-    dark:[--noise-3:rgb(49,46,129)]
-  "
-          gradientColors={[
-            "var(--noise-1)",
-            "var(--noise-2)",
-            "var(--noise-3)",
-          ]}
-        >
+        <FieldWrapper>
           <SelectUserCard
             selectCardId={selectCardId}
             setSelectedCardId={setSelectedCardId}
             setMaxBalance={setMaxBalance}
             triggerClassName={fieldSurfaceClassName}
           />
-        </NoiseBackground>
+        </FieldWrapper>
+      </section>
+
+      <section className="my-2">
+        <h1 className="mb-1 text-xl font-semibold">Choose category: </h1>
+        <FieldWrapper>
+          <SelectCategory
+            selectCategoryId={selectCategoryId}
+            setSelectCategoryId={setSelectedCategoryId}
+            triggerClassName={fieldSurfaceClassName}
+          />
+        </FieldWrapper>
       </section>
 
       <section>
         <h1 className="mb-1 text-xl font-semibold">Note: </h1>
-        <NoiseBackground
-          containerClassName="
-    [--noise-1:rgb(226,232,240)]
-    [--noise-2:rgb(191,219,254)]
-    [--noise-3:rgb(216,180,254)]
-
-    dark:[--noise-1:rgb(17,24,39)]
-    dark:[--noise-2:rgb(30,41,59)]
-    dark:[--noise-3:rgb(49,46,129)]
-  "
-          gradientColors={[
-            "var(--noise-1)",
-            "var(--noise-2)",
-            "var(--noise-3)",
-          ]}
-        >
+        <FieldWrapper>
           <Textarea
             className={fieldSurfaceClassName}
             value={note}
             onChange={(e) => setNote(e.target.value)}
             placeholder="Type your message here."
           />
-        </NoiseBackground>
+        </FieldWrapper>
       </section>
 
       <div className="mt-2 flex-col justify-center">
