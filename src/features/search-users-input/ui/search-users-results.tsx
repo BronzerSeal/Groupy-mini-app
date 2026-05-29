@@ -72,7 +72,7 @@ export const SearchUsersResults = ({
 
   if (!isLoading && !isError && hasSearch && users && users.length > 0) {
     return (
-      <div className="space-y-3">
+      <div className="flex flex-col space-y-3">
         {users.map((user) => (
           <Link href={`/transaction/${user.id}`} key={user.id}>
             <SearchUserCard user={user} />

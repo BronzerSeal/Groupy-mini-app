@@ -10,6 +10,8 @@ Live Telegram Mini App: https://web.telegram.org/a/#8698597747
 
 ![Groupy home screen](public/home-page.png)
 
+##### P.s The mini app has test users, for example: Ethan Noan and Olivia
+
 ## What The App Does
 
 - Authenticates users through Telegram `initData`

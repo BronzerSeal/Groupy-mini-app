@@ -44,6 +44,7 @@ export const useSendMoneyMutation = () => {
 
       queryClient.invalidateQueries({
         queryKey: ["userTransactions", variables.senderId],
+        refetchType: "all",
       })
 
       queryClient.invalidateQueries({
@@ -68,6 +69,10 @@ export const useSendMoneyMutation = () => {
 
       queryClient.invalidateQueries({
         queryKey: ["userDonutTransactions", variables.senderId],
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: ["userComparisons", variables.senderId],
       })
     },
     retry: 1,
