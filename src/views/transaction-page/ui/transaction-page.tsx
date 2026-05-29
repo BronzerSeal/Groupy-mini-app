@@ -20,7 +20,7 @@ const fieldSurfaceClassName =
 
 const TransactionPage = () => {
   const { userId: merchantId } = useParams<{ userId: string }>()
-  const user = useSignal(initData.user)
+  const user = useSignal(initData.state)
   const [selectCardId, setSelectedCardId] = useState<string | undefined>(
     undefined
   )
@@ -35,16 +35,16 @@ const TransactionPage = () => {
   const [error, setError] = useState("")
 
   const { data: merchantUser } = UseUserInfoById(merchantId, true, !!merchantId)
-  const { submit } = useSendMoney()
+  const { submit, isPending } = useSendMoney()
   const handleSubmit = async () => {
     const result = await submit({
       amount: +amount,
       maxBalance,
       selectCardId,
       selectMerchantCardId,
-      userId: user?.id,
+      userId: user?.user?.id,
       merchantId: merchantUser?.id,
-      senderId: String(user?.id),
+      senderId: String(user?.user?.id),
       senderCardId: selectCardId ?? "",
       category: CATEGORIES[+selectCategoryId].label,
       notes: note,
@@ -149,10 +149,11 @@ const TransactionPage = () => {
           ]}
         >
           <button
+            disabled={isPending}
             onClick={handleSubmit}
             className="h-full w-full cursor-pointer rounded-sm bg-linear-to-r from-neutral-100 via-neutral-100 to-white px-4 py-2 text-black shadow-[0px_2px_0px_0px_var(--color-neutral-50)_inset,0px_0.5px_1px_0px_var(--color-neutral-400)] transition-all duration-100 active:scale-98 dark:from-black dark:via-black dark:to-neutral-900 dark:text-white dark:shadow-[0px_1px_0px_0px_var(--color-neutral-950)_inset,0px_1px_0px_0px_var(--color-neutral-800)]"
           >
-            transfer {amount} dollars
+            {isPending ? "Sending..." : `transfer ${amount || 0} dollars`}
           </button>
         </NoiseBackground>
       </div>

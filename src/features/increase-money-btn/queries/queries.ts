@@ -24,6 +24,10 @@ export const useUpdateCardBalance = () => {
       queryClient.invalidateQueries({
         queryKey: ["userBalance", variables.userId],
       })
+
+      queryClient.invalidateQueries({
+        queryKey: ["userCards-name", variables.userId],
+      })
     },
     retry: 1,
   })
